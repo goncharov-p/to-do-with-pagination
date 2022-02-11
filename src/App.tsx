@@ -8,30 +8,28 @@ import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { Box } from "@mui/material";
 import { ItemList } from "./components/ItemList";
-import { useEffect, useState } from "react";
-import { Todo } from "./class/Todo";
+import { useState,useContext } from "react";
 import { TodoTypes } from "/home/user/todo-tS/to-do/src/class/TodoInterface";
-import { elementAcceptingRef } from "@mui/utils";
+import { Context } from "./context/count-context";
+
 
 const App: React.FC = () => {
-  const [value, setValue] = useState("");
-
-  // const Todos: TodoTypes[] = []; массив не работает
-
-  const [todos, setTodos] = useState<TodoTypes[]>([]);
-
-  const todoPush = () => {
-    // let todo: TodoTypes = { text: value, complete: false };
-    // Todos.push(todo); закоментированный код не работает 
-    if (value) {
-      setTodos([...todos, { id: Date.now(), text: value, complete: false }]);
-      setValue("");
+  const [newTaskText, setNewTaskText] = useState("");
+  // const [todos, setTodos] = useState<TodoTypes[]>([]);
+const {todos, setTodos}=useContext(Context);
+  const AddTask = () => {
+    if (newTaskText) {
+      setTodos([
+        ...todos,
+        { id: Date.now(), text: newTaskText, complete: false },
+      ]);
+      setNewTaskText("");
     }
   };
 
   const check = (id: number): void => {
     setTodos(
-      todos.map((element) => {
+      todos.map((element:any) => {
         if (element.id !== id) return element;
         return {
           ...element,
@@ -42,17 +40,20 @@ const App: React.FC = () => {
   };
 
   const deleteTodo = (id: number): void => {
-    setTodos(todos.filter((element) => element.id != id));
+    setTodos(todos.filter((element:any) => element.id !== id));
   };
 
-  const editTodo = (id: number, TextEdit: string): void => {
-    setTodos(todos.map((elem)=>{
-      if(elem.id!==id){return elem}else{
-        return{...elem,text:TextEdit}
-      }
-    }))
+  const editTodo = (id: number, textEdit: string): void => {
+    setTodos(
+      todos.map((elem:any) => {
+        if (elem.id !== id) {
+          return elem;
+        } else {
+          return { ...elem, text: textEdit };
+        }
+      })
+    );
   };
-  console.log(todos);
 
   return (
     <div>
@@ -69,19 +70,19 @@ const App: React.FC = () => {
             id="outlined-basic"
             label="Enter Title"
             variant="outlined"
-            value={value}
+            value={newTaskText}
             fullWidth
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => setNewTaskText(e.target.value)}
           />
           <Box textAlign="center">
-            <Button variant="contained" sx={{ mt: 2 }} onClick={todoPush}>
+            <Button variant="contained" sx={{ mt: 2 }} onClick={AddTask}>
               Add
             </Button>
           </Box>
         </CardContent>
       </Card>
       <ItemList
-        items={todos}
+        // items={todos}
         check={check}
         deleteTodo={deleteTodo}
         editTodo={editTodo}
