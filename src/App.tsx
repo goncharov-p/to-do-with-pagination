@@ -14,18 +14,16 @@ import { TodoTypes } from "/home/user/todo-tS/to-do/src/class/TodoInterface";
 import { elementAcceptingRef } from "@mui/utils";
 
 const App: React.FC = () => {
-  const [value, setValue] = useState("");
-
-  // const Todos: TodoTypes[] = []; массив не работает
-
+  const [newTaskText, setNewTaskText] = useState("");
   const [todos, setTodos] = useState<TodoTypes[]>([]);
 
-  const todoPush = () => {
-    // let todo: TodoTypes = { text: value, complete: false };
-    // Todos.push(todo); закоментированный код не работает 
-    if (value) {
-      setTodos([...todos, { id: Date.now(), text: value, complete: false }]);
-      setValue("");
+  const AddTask = () => {
+    if (newTaskText) {
+      setTodos([
+        ...todos,
+        { id: Date.now(), text: newTaskText, complete: false },
+      ]);
+      setNewTaskText("");
     }
   };
 
@@ -42,17 +40,20 @@ const App: React.FC = () => {
   };
 
   const deleteTodo = (id: number): void => {
-    setTodos(todos.filter((element) => element.id != id));
+    setTodos(todos.filter((element) => element.id !== id));
   };
 
-  const editTodo = (id: number, TextEdit: string): void => {
-    setTodos(todos.map((elem)=>{
-      if(elem.id!==id){return elem}else{
-        return{...elem,text:TextEdit}
-      }
-    }))
+  const editTodo = (id: number, textEdit: string): void => {
+    setTodos(
+      todos.map((elem) => {
+        if (elem.id !== id) {
+          return elem;
+        } else {
+          return { ...elem, text: textEdit };
+        }
+      })
+    );
   };
-  console.log(todos);
 
   return (
     <div>
@@ -69,12 +70,12 @@ const App: React.FC = () => {
             id="outlined-basic"
             label="Enter Title"
             variant="outlined"
-            value={value}
+            value={newTaskText}
             fullWidth
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => setNewTaskText(e.target.value)}
           />
           <Box textAlign="center">
-            <Button variant="contained" sx={{ mt: 2 }} onClick={todoPush}>
+            <Button variant="contained" sx={{ mt: 2 }} onClick={AddTask}>
               Add
             </Button>
           </Box>
