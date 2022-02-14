@@ -1,54 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { ItemTodos } from "./ItemTodos";
-import { TodoTypes } from "/home/user/todo-tS/to-do/src/class/TodoInterface";
 import Pagination from "@mui/material/Pagination";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
+import { TodosContext } from "../context/TodosContext";
 
-
-interface ToProps {
-  items: TodoTypes[];
+interface ItemListProps {
   check: (id: number) => void;
   deleteTodo: (id: number) => void;
-  editTodo: (id: number, TextEdit: string) => void;
+  editTodo: (id: number, textEdit: string) => void;
 }
 
-const ItemList: React.FC<ToProps> = (props) => {
-  const { items, check, deleteTodo, editTodo } = props;
-  const countItem =Math.ceil(items.length / 3);
+export const ItemList: React.FC<ItemListProps> = (props) => {
+  const { check, deleteTodo, editTodo } = props;
+  const { todos, setTodos } = useContext(TodosContext!);
 
-  const [page, setPage] = React.useState(1);
+  const countItem = todos.length ? Math.ceil(todos.length / 3) : 1;
+
+  const [page, setPage] = useState(1);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   const lastIndex = page * 3;
   const firstIndex = lastIndex - 3;
-  const currentP = items.slice(firstIndex, lastIndex);
+  const currentPage = todos.slice(firstIndex, lastIndex);
 
   return (
     <div>
-     <Box sx={{ m: "auto", width: 1000 }}>
-      {currentP.map((element, index) => (
-        <ItemTodos
-          {...element}
-          key={index}
-          check={check}
-          deleteTodo={deleteTodo}
-          editTodo={editTodo}
-        />
-      ))}
-
-      <Pagination
-        count={countItem}
-        defaultPage={1}
-        siblingCount={0}
-        boundaryCount={items.length}
-        page={page}
-        onChange={handleChange} sx={{ml:100,mt:6}}
-        color="primary"
-      />
+      <Box sx={{ m: "auto", maxWidth:'800px' }}>
+        {currentPage.map((element: any) => (
+          <ItemTodos
+            {...element}
+            key={element.id}
+            check={check}
+            deleteTodo={deleteTodo}
+            editTodo={editTodo}
+          />
+        ))}
+        <Box sx={{ display:'flex',justifyContent:'flex-end',width:'100%'}}>
+          <Pagination
+            count={countItem}
+            defaultPage={1}
+            siblingCount={1}
+            boundaryCount={1}
+            onChange={handleChange}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+            color="primary"
+            size="small"
+          />
+        </Box>
       </Box>
     </div>
   );
 };
-export { ItemList };
+
