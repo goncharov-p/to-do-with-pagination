@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Card } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+<<<<<<< Updated upstream
 import { Checkbox, Stack, Container, Box, TextField } from "@mui/material";
 import { TodoTypes } from "/home/user/todo-tS/to-do/src/class/TodoInterface";
+=======
+import { Checkbox, Stack, Box, TextField } from "@mui/material";
+// import { TodoTypes } from "/home/user/todo-tS/to-do/src/class/TodoInterface";
+import { TodoTypes } from "../class/TodoInterface";
+>>>>>>> Stashed changes
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import CheckIcon from '@mui/icons-material/Check';
 import CheckCircleSharpIcon from '@mui/icons-material/CheckCircleSharp';

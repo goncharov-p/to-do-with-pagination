@@ -3,3 +3,8 @@ export interface TodoTypes {
   text: string;
   complete: boolean;
 }
+
+type ContextType = {
+  todos: TodoTypes[]
+  setTodos: (todos: TodoTypes) => void
+}
