@@ -8,6 +8,7 @@ import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { Box } from "@mui/material";
 import { ItemList } from "./components/ItemList";
+<<<<<<< Updated upstream
 import { useEffect, useState } from "react";
 import { Todo } from "./class/Todo";
 import { TodoTypes } from "/home/user/todo-tS/to-do/src/class/TodoInterface";
@@ -26,12 +27,35 @@ const App: React.FC = () => {
     if (value) {
       setTodos([...todos, { id: Date.now(), text: value, complete: false }]);
       setValue("");
+=======
+import { useState, useContext } from "react";
+import { Ctxt } from "./context/ContextTest";
+import { TodoTypes } from "./class/TodoInterface";
+import { ContextTypeTodos } from "./context/count-context";
+
+const App: React.FC = () => {
+  const [newTaskText, setNewTaskText] = useState("");
+
+  const { todos, setTodos } = useContext(Ctxt)!;
+  
+  const AddTask = () => {
+    if (newTaskText) {
+      setTodos([
+        ...todos,
+        { id: Date.now(), text: newTaskText, complete: false },
+      ]);
+      setNewTaskText("");
+>>>>>>> Stashed changes
     }
   };
 
   const check = (id: number): void => {
     setTodos(
+<<<<<<< Updated upstream
       todos.map((element) => {
+=======
+      todos.map((element: TodoTypes) => {
+>>>>>>> Stashed changes
         if (element.id !== id) return element;
         return {
           ...element,
@@ -42,6 +66,7 @@ const App: React.FC = () => {
   };
 
   const deleteTodo = (id: number): void => {
+<<<<<<< Updated upstream
     setTodos(todos.filter((element) => element.id != id));
   };
 
@@ -51,6 +76,21 @@ const App: React.FC = () => {
         return{...elem,text:TextEdit}
       }
     }))
+=======
+    setTodos(todos.filter((element: TodoTypes) => element.id !== id));
+  };
+
+  const editTodo = (id: number, textEdit: string): void => {
+    setTodos(
+      todos.map((elem: TodoTypes) => {
+        if (elem.id !== id) {
+          return elem;
+        } else {
+          return { ...elem, text: textEdit };
+        }
+      })
+    );
+>>>>>>> Stashed changes
   };
   console.log(todos);
 
